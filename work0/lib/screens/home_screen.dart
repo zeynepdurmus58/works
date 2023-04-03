@@ -30,8 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CategoryWidget(
-                  category: "category1",
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/test'),
+                  child: CategoryWidget(
+                    category: "category1",
+                  ),
                 ),
                 CategoryWidget(
                   category: "category2"
