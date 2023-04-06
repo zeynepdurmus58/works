@@ -12,6 +12,8 @@ class TestScreen extends StatefulWidget {
 class _TestScreenState extends State<TestScreen> {
   late Isar isar;
 
+  List<Widget> userList = [];
+
   addUser(String name, String motherName, String fatherName, int age, String birthPlace, String phone) async {
     
 
@@ -29,7 +31,26 @@ class _TestScreenState extends State<TestScreen> {
 
     //isar.close();
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("kullanıcı eklendi")));
+    getUsers();
+    //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("kullanıcı eklendi")));
+  }
+
+  getUsers() async {
+    final users = await isar.users.where().findAll();
+    userList = users
+        .map(
+          (e) => Row(
+            children: [
+              Text(e.name!),
+              SizedBox(width: 5,),
+              Text(e.id.toString()),
+              SizedBox(width: 5,),
+              Text("Yaş: " + e.age.toString()),
+            ],
+          ),
+        )
+        .toList();
+    setState(() {});
   }
 
   openConnection() async {
@@ -59,13 +80,23 @@ class _TestScreenState extends State<TestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          ElevatedButton(
-              onPressed: () => addUser(
-                  "Zeynep Durmuş", "X", "Y", 20, "İstanbul", "5580585858"),
-              child: Text("ekle")),
-        ],
+      body: Center(
+        child: Column(
+          children: [
+            ElevatedButton(
+                onPressed: () => addUser(
+                    "Zeynep Durmuş", "X", "Y", 4, "İstanbul", "5580585858"),
+                child: Text("ekle")),
+            ElevatedButton(
+                onPressed: getUsers, child: Text("Kullanıcıları Listele")),
+            Expanded(
+              child: 
+                ListView(
+                  children: userList,
+                )
+            ),
+          ],
+        ),
       ),
     );
   }
