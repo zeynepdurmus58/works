@@ -53,6 +53,42 @@ class _TestScreenState extends State<TestScreen> {
     setState(() {});
   }
 
+  getYoungUsers() async {
+    final users = await isar.users.filter().ageLessThan(10).findAll();
+    userList = users
+        .map(
+          (e) => Row(
+            children: [
+              Text(e.name!),
+              SizedBox(width: 5,),
+              Text(e.id.toString()),
+              SizedBox(width: 5,),
+              Text("Yaş: " + e.age.toString()),
+            ],
+          ),
+        )
+        .toList();
+    setState(() {});
+  }
+
+  getOldUsers() async {
+    final users = await isar.users.filter().ageGreaterThan(10).findAll();
+    userList = users
+        .map(
+          (e) => Row(
+            children: [
+              Text(e.name!),
+              SizedBox(width: 5,),
+              Text(e.id.toString()),
+              SizedBox(width: 5,),
+              Text("Yaş: " + e.age.toString()),
+            ],
+          ),
+        )
+        .toList();
+    setState(() {});
+  }
+
   openConnection() async {
     isar = await Isar.open([UserSchema]);
     setState(() {});
@@ -89,6 +125,10 @@ class _TestScreenState extends State<TestScreen> {
                 child: Text("ekle")),
             ElevatedButton(
                 onPressed: getUsers, child: Text("Kullanıcıları Listele")),
+             ElevatedButton(
+                onPressed: getYoungUsers, child: Text("10 yaşından küçükleri listele")),
+             ElevatedButton(
+                onPressed: getOldUsers, child: Text("10 yaşından büyükleri listele")),
             Expanded(
               child: 
                 ListView(
