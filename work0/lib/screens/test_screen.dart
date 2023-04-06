@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:work0/db/user.dart';
@@ -35,18 +37,38 @@ class _TestScreenState extends State<TestScreen> {
     //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("kullanıcı eklendi")));
   }
 
+  deleteUsers(int id) async {
+    await isar.writeTxn(() async {
+      bool result = await isar.users.delete(id);
+      if (result) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("kullanıcı silindi")));
+        getUsers();
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("kullanıcı silme hatalı")));
+      }
+    });
+  }
+
   getUsers() async {
     final users = await isar.users.where().findAll();
     userList = users
         .map(
-          (e) => Row(
-            children: [
-              Text(e.name!),
-              SizedBox(width: 5,),
-              Text(e.id.toString()),
-              SizedBox(width: 5,),
-              Text("Yaş: " + e.age.toString()),
-            ],
+          (e) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(e.name.toString()),
+                SizedBox(width: 5,),
+                Text(e.id.toString()),
+                SizedBox(width: 5,),
+                Text("Yaş: " + e.age.toString()),
+                SizedBox(width: 5,),
+                ElevatedButton(onPressed: () => deleteUsers(e.id), child: Icon(Icons.delete)),
+              ],
+            ),
           ),
         )
         .toList();
