@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, use_build_context_synchronously, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
@@ -14,7 +14,8 @@ class TestScreen extends StatefulWidget {
 class _TestScreenState extends State<TestScreen> {
   late Isar isar;
 
-  List<Widget> userList = [];
+  //List<Widget> userList = [];
+  List<User> userList = [];
 
   addUser(String name, String motherName, String fatherName, int age, String birthPlace, String phone) async {
     
@@ -51,9 +52,8 @@ class _TestScreenState extends State<TestScreen> {
     });
   }
 
-  getUsers() async {
-    final users = await isar.users.where().findAll();
-    userList = users
+  usersToWidget() {
+    return userList
         .map(
           (e) => Padding(
             padding: const EdgeInsets.all(8.0),
@@ -72,42 +72,23 @@ class _TestScreenState extends State<TestScreen> {
           ),
         )
         .toList();
+  }
+
+  getUsers() async {
+    final users = await isar.users.where().findAll();
+    userList = users;
     setState(() {});
   }
 
   getYoungUsers() async {
     final users = await isar.users.filter().ageLessThan(10).findAll();
-    userList = users
-        .map(
-          (e) => Row(
-            children: [
-              Text(e.name!),
-              SizedBox(width: 5,),
-              Text(e.id.toString()),
-              SizedBox(width: 5,),
-              Text("Yaş: " + e.age.toString()),
-            ],
-          ),
-        )
-        .toList();
+    userList = users;
     setState(() {});
   }
 
   getOldUsers() async {
     final users = await isar.users.filter().ageGreaterThan(10).findAll();
-    userList = users
-        .map(
-          (e) => Row(
-            children: [
-              Text(e.name!),
-              SizedBox(width: 5,),
-              Text(e.id.toString()),
-              SizedBox(width: 5,),
-              Text("Yaş: " + e.age.toString()),
-            ],
-          ),
-        )
-        .toList();
+    userList = users;
     setState(() {});
   }
 
@@ -154,7 +135,7 @@ class _TestScreenState extends State<TestScreen> {
             Expanded(
               child: 
                 ListView(
-                  children: userList,
+                  children: usersToWidget(),
                 )
             ),
           ],
