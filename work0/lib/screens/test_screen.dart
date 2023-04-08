@@ -38,6 +38,7 @@ class _TestScreenState extends State<TestScreen> {
     //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("kullanıcı eklendi")));
   }
 
+//kullanıcı silme
   deleteUsers(int id) async {
     await isar.writeTxn(() async {
       bool result = await isar.users.delete(id);
@@ -80,12 +81,14 @@ class _TestScreenState extends State<TestScreen> {
     setState(() {});
   }
 
+//yaşından küçükleri
   getYoungUsers() async {
     final users = await isar.users.filter().ageLessThan(10).findAll();
     userList = users;
     setState(() {});
   }
 
+//yaşından büyükleri
   getOldUsers() async {
     final users = await isar.users.filter().ageGreaterThan(10).findAll();
     userList = users;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:work0/screens/categories_screen.dart';
 import 'package:work0/screens/home_screen.dart';
 import 'package:work0/screens/test_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home' :(context) => HomeScreen(),
         '/test' :(context) => TestScreen(),
+        '/categories' :(context) => CategoriesScreen()
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

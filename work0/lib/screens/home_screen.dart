@@ -33,11 +33,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 InkWell(
                   onTap: () => Navigator.of(context).pushNamed('/test'),
                   child: CategoryWidget(
-                    category: "category1",
+                    category: "users",
                   ),
                 ),
-                CategoryWidget(
-                  category: "category2"
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/categories'),
+                  child: CategoryWidget(
+                    category: "Kategoriler"
+                  ),
                 ),
               ],
             ),
