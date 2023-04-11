@@ -17,9 +17,8 @@ class _TestScreenState extends State<TestScreen> {
   //List<Widget> userList = [];
   List<User> userList = [];
 
-  addUser(String name, String motherName, String fatherName, int age, String birthPlace, String phone) async {
-    
-
+  addUser(String name, String motherName, String fatherName, int age,
+      String birthPlace, String phone) async {
     //veritabanı işlemleri burda yapılacak
 
     final newUser = User()
@@ -30,7 +29,7 @@ class _TestScreenState extends State<TestScreen> {
       ..birthPlace = birthPlace
       ..phone = phone;
 
-      await isar.writeTxn(() async => await isar.users.put(newUser));
+    await isar.writeTxn(() async => await isar.users.put(newUser));
 
     //isar.close();
 
@@ -53,6 +52,29 @@ class _TestScreenState extends State<TestScreen> {
     });
   }
 
+//kullanıcı güncelleme
+  editUser(int id, String name, String motherName, String fatherName, int age,
+      String birthPlace, String phone) async {
+    //veritabanı işlemleri burda yapılacak
+
+    final user = User()
+      ..id = id
+      ..name = name
+      ..fatherName = fatherName
+      ..motherName = motherName
+      ..age = age
+      ..birthPlace = birthPlace
+      ..phone = phone;
+
+
+    await isar.writeTxn(() async => await isar.users.put(user));
+
+    //isar.close();
+
+    getUsers();
+    //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("kullanıcı eklendi")));
+  }
+
   usersToWidget() {
     return userList
         .map(
@@ -62,12 +84,20 @@ class _TestScreenState extends State<TestScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(e.name.toString()),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 Text(e.id.toString()),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 Text("Yaş: " + e.age.toString()),
-                SizedBox(width: 5,),
-                ElevatedButton(onPressed: () => deleteUsers(e.id), child: Icon(Icons.delete)),
+                SizedBox(
+                  width: 5,
+                ),
+                ElevatedButton(
+                    onPressed: () => deleteUsers(e.id),
+                    child: Icon(Icons.delete)),
               ],
             ),
           ),
@@ -104,7 +134,7 @@ class _TestScreenState extends State<TestScreen> {
     await isar.close();
   }
 
-    @override
+  @override
   void initState() {
     print("ekran çalıştı");
     openConnection();
@@ -131,16 +161,20 @@ class _TestScreenState extends State<TestScreen> {
                 child: Text("ekle")),
             ElevatedButton(
                 onPressed: getUsers, child: Text("Kullanıcıları Listele")),
-             ElevatedButton(
-                onPressed: getYoungUsers, child: Text("10 yaşından küçükleri listele")),
-             ElevatedButton(
-                onPressed: getOldUsers, child: Text("10 yaşından büyükleri listele")),
+            ElevatedButton(
+                onPressed: getYoungUsers,
+                child: Text("10 yaşından küçükleri listele")),
+            ElevatedButton(
+                onPressed: getOldUsers,
+                child: Text("10 yaşından büyükleri listele")),
+            ElevatedButton(
+                onPressed: () => editUser(
+                    1, "Zeynep", "X", "Y", 1000, "İstanbul", "5580585858"),
+                child: Text("Kullanıcı güncelleme")),
             Expanded(
-              child: 
-                ListView(
-                  children: usersToWidget(),
-                )
-            ),
+                child: ListView(
+              children: usersToWidget(),
+            )),
           ],
         ),
       ),
