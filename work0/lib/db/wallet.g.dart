@@ -17,24 +17,29 @@ const IncomeSchema = CollectionSchema(
   name: r'Income',
   id: -267602993667790363,
   properties: {
-    r'income_amount': PropertySchema(
+    r'amount': PropertySchema(
       id: 0,
-      name: r'income_amount',
+      name: r'amount',
       type: IsarType.double,
     ),
-    r'income_note': PropertySchema(
+    r'category': PropertySchema(
       id: 1,
-      name: r'income_note',
-      type: IsarType.string,
+      name: r'category',
+      type: IsarType.long,
     ),
-    r'income_source': PropertySchema(
+    r'name': PropertySchema(
       id: 2,
-      name: r'income_source',
+      name: r'name',
       type: IsarType.string,
     ),
-    r'income_title': PropertySchema(
+    r'note': PropertySchema(
       id: 3,
-      name: r'income_title',
+      name: r'note',
+      type: IsarType.string,
+    ),
+    r'source': PropertySchema(
+      id: 4,
+      name: r'source',
       type: IsarType.string,
     )
   },
@@ -44,20 +49,7 @@ const IncomeSchema = CollectionSchema(
   deserializeProp: _incomeDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {
-    r'expenditure': LinkSchema(
-      id: 3315533506678374731,
-      name: r'expenditure',
-      target: r'Expenditure',
-      single: true,
-    ),
-    r'category': LinkSchema(
-      id: -3420350173737523586,
-      name: r'category',
-      target: r'Category',
-      single: true,
-    )
-  },
+  links: {},
   embeddedSchemas: {},
   getId: _incomeGetId,
   getLinks: _incomeGetLinks,
@@ -72,19 +64,19 @@ int _incomeEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
-    final value = object.income_note;
+    final value = object.name;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
   {
-    final value = object.income_source;
+    final value = object.note;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
   {
-    final value = object.income_title;
+    final value = object.source;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -98,10 +90,11 @@ void _incomeSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDouble(offsets[0], object.income_amount);
-  writer.writeString(offsets[1], object.income_note);
-  writer.writeString(offsets[2], object.income_source);
-  writer.writeString(offsets[3], object.income_title);
+  writer.writeDouble(offsets[0], object.amount);
+  writer.writeLong(offsets[1], object.category);
+  writer.writeString(offsets[2], object.name);
+  writer.writeString(offsets[3], object.note);
+  writer.writeString(offsets[4], object.source);
 }
 
 Income _incomeDeserialize(
@@ -111,11 +104,12 @@ Income _incomeDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Income();
+  object.amount = reader.readDouble(offsets[0]);
+  object.category = reader.readLongOrNull(offsets[1]);
   object.id = id;
-  object.income_amount = reader.readDouble(offsets[0]);
-  object.income_note = reader.readStringOrNull(offsets[1]);
-  object.income_source = reader.readStringOrNull(offsets[2]);
-  object.income_title = reader.readStringOrNull(offsets[3]);
+  object.name = reader.readStringOrNull(offsets[2]);
+  object.note = reader.readStringOrNull(offsets[3]);
+  object.source = reader.readStringOrNull(offsets[4]);
   return object;
 }
 
@@ -129,10 +123,12 @@ P _incomeDeserializeProp<P>(
     case 0:
       return (reader.readDouble(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
+      return (reader.readStringOrNull(offset)) as P;
+    case 4:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -144,14 +140,11 @@ Id _incomeGetId(Income object) {
 }
 
 List<IsarLinkBase<dynamic>> _incomeGetLinks(Income object) {
-  return [object.expenditure, object.category];
+  return [];
 }
 
 void _incomeAttach(IsarCollection<dynamic> col, Id id, Income object) {
   object.id = id;
-  object.expenditure
-      .attach(col, col.isar.collection<Expenditure>(), r'expenditure', id);
-  object.category.attach(col, col.isar.collection<Category>(), r'category', id);
 }
 
 extension IncomeQueryWhereSort on QueryBuilder<Income, Income, QWhere> {
@@ -230,6 +223,137 @@ extension IncomeQueryWhere on QueryBuilder<Income, Income, QWhereClause> {
 }
 
 extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
+  QueryBuilder<Income, Income, QAfterFilterCondition> amountEqualTo(
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'amount',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> amountGreaterThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'amount',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> amountLessThan(
+    double value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'amount',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> amountBetween(
+    double lower,
+    double upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'amount',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> categoryIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'category',
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> categoryIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'category',
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> categoryEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'category',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> categoryGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'category',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> categoryLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'category',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> categoryBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'category',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Income, Income, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -282,98 +406,36 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_amountEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'income_amount',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_amountGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'income_amount',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_amountLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'income_amount',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_amountBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'income_amount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteIsNull() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'income_note',
+        property: r'name',
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteIsNotNull() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'income_note',
+        property: r'name',
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteEqualTo(
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'income_note',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteGreaterThan(
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -381,14 +443,14 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'income_note',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteLessThan(
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -396,14 +458,14 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'income_note',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteBetween(
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -412,7 +474,7 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'income_note',
+        property: r'name',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -422,104 +484,103 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteStartsWith(
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'income_note',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteEndsWith(
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'income_note',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteContains(
-      String value,
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameContains(String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'income_note',
+        property: r'name',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteMatches(
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'income_note',
+        property: r'name',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteIsEmpty() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'income_note',
+        property: r'name',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_noteIsNotEmpty() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> nameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'income_note',
+        property: r'name',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_sourceIsNull() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'income_source',
+        property: r'note',
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_sourceIsNotNull() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'income_source',
+        property: r'note',
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_sourceEqualTo(
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'income_source',
+        property: r'note',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_sourceGreaterThan(
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -527,14 +588,14 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'income_source',
+        property: r'note',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_sourceLessThan(
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -542,14 +603,14 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'income_source',
+        property: r'note',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_sourceBetween(
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -558,7 +619,7 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'income_source',
+        property: r'note',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -568,105 +629,103 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_sourceStartsWith(
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'income_source',
+        property: r'note',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_sourceEndsWith(
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'income_source',
+        property: r'note',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_sourceContains(
-      String value,
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteContains(String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'income_source',
+        property: r'note',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_sourceMatches(
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'income_source',
+        property: r'note',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_sourceIsEmpty() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'income_source',
+        property: r'note',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition>
-      income_sourceIsNotEmpty() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> noteIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'income_source',
+        property: r'note',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleIsNull() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'income_title',
+        property: r'source',
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleIsNotNull() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'income_title',
+        property: r'source',
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleEqualTo(
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'income_title',
+        property: r'source',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleGreaterThan(
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -674,14 +733,14 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'income_title',
+        property: r'source',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleLessThan(
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -689,14 +748,14 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'income_title',
+        property: r'source',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleBetween(
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -705,7 +764,7 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'income_title',
+        property: r'source',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -715,69 +774,69 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleStartsWith(
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'income_title',
+        property: r'source',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleEndsWith(
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'income_title',
+        property: r'source',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleContains(
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'income_title',
+        property: r'source',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleMatches(
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'income_title',
+        property: r'source',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleIsEmpty() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'income_title',
+        property: r'source',
         value: '',
       ));
     });
   }
 
-  QueryBuilder<Income, Income, QAfterFilterCondition> income_titleIsNotEmpty() {
+  QueryBuilder<Income, Income, QAfterFilterCondition> sourceIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'income_title',
+        property: r'source',
         value: '',
       ));
     });
@@ -786,85 +845,95 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
 
 extension IncomeQueryObject on QueryBuilder<Income, Income, QFilterCondition> {}
 
-extension IncomeQueryLinks on QueryBuilder<Income, Income, QFilterCondition> {
-  QueryBuilder<Income, Income, QAfterFilterCondition> expenditure(
-      FilterQuery<Expenditure> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'expenditure');
-    });
-  }
-
-  QueryBuilder<Income, Income, QAfterFilterCondition> expenditureIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'expenditure', 0, true, 0, true);
-    });
-  }
-
-  QueryBuilder<Income, Income, QAfterFilterCondition> category(
-      FilterQuery<Category> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'category');
-    });
-  }
-
-  QueryBuilder<Income, Income, QAfterFilterCondition> categoryIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'category', 0, true, 0, true);
-    });
-  }
-}
+extension IncomeQueryLinks on QueryBuilder<Income, Income, QFilterCondition> {}
 
 extension IncomeQuerySortBy on QueryBuilder<Income, Income, QSortBy> {
-  QueryBuilder<Income, Income, QAfterSortBy> sortByIncome_amount() {
+  QueryBuilder<Income, Income, QAfterSortBy> sortByAmount() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_amount', Sort.asc);
+      return query.addSortBy(r'amount', Sort.asc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> sortByIncome_amountDesc() {
+  QueryBuilder<Income, Income, QAfterSortBy> sortByAmountDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_amount', Sort.desc);
+      return query.addSortBy(r'amount', Sort.desc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> sortByIncome_note() {
+  QueryBuilder<Income, Income, QAfterSortBy> sortByCategory() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_note', Sort.asc);
+      return query.addSortBy(r'category', Sort.asc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> sortByIncome_noteDesc() {
+  QueryBuilder<Income, Income, QAfterSortBy> sortByCategoryDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_note', Sort.desc);
+      return query.addSortBy(r'category', Sort.desc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> sortByIncome_source() {
+  QueryBuilder<Income, Income, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_source', Sort.asc);
+      return query.addSortBy(r'name', Sort.asc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> sortByIncome_sourceDesc() {
+  QueryBuilder<Income, Income, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_source', Sort.desc);
+      return query.addSortBy(r'name', Sort.desc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> sortByIncome_title() {
+  QueryBuilder<Income, Income, QAfterSortBy> sortByNote() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_title', Sort.asc);
+      return query.addSortBy(r'note', Sort.asc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> sortByIncome_titleDesc() {
+  QueryBuilder<Income, Income, QAfterSortBy> sortByNoteDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_title', Sort.desc);
+      return query.addSortBy(r'note', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterSortBy> sortBySource() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'source', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterSortBy> sortBySourceDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'source', Sort.desc);
     });
   }
 }
 
 extension IncomeQuerySortThenBy on QueryBuilder<Income, Income, QSortThenBy> {
+  QueryBuilder<Income, Income, QAfterSortBy> thenByAmount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'amount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterSortBy> thenByAmountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'amount', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterSortBy> thenByCategory() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'category', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterSortBy> thenByCategoryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'category', Sort.desc);
+    });
+  }
+
   QueryBuilder<Income, Income, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -877,81 +946,74 @@ extension IncomeQuerySortThenBy on QueryBuilder<Income, Income, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> thenByIncome_amount() {
+  QueryBuilder<Income, Income, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_amount', Sort.asc);
+      return query.addSortBy(r'name', Sort.asc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> thenByIncome_amountDesc() {
+  QueryBuilder<Income, Income, QAfterSortBy> thenByNameDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_amount', Sort.desc);
+      return query.addSortBy(r'name', Sort.desc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> thenByIncome_note() {
+  QueryBuilder<Income, Income, QAfterSortBy> thenByNote() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_note', Sort.asc);
+      return query.addSortBy(r'note', Sort.asc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> thenByIncome_noteDesc() {
+  QueryBuilder<Income, Income, QAfterSortBy> thenByNoteDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_note', Sort.desc);
+      return query.addSortBy(r'note', Sort.desc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> thenByIncome_source() {
+  QueryBuilder<Income, Income, QAfterSortBy> thenBySource() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_source', Sort.asc);
+      return query.addSortBy(r'source', Sort.asc);
     });
   }
 
-  QueryBuilder<Income, Income, QAfterSortBy> thenByIncome_sourceDesc() {
+  QueryBuilder<Income, Income, QAfterSortBy> thenBySourceDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_source', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Income, Income, QAfterSortBy> thenByIncome_title() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_title', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Income, Income, QAfterSortBy> thenByIncome_titleDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'income_title', Sort.desc);
+      return query.addSortBy(r'source', Sort.desc);
     });
   }
 }
 
 extension IncomeQueryWhereDistinct on QueryBuilder<Income, Income, QDistinct> {
-  QueryBuilder<Income, Income, QDistinct> distinctByIncome_amount() {
+  QueryBuilder<Income, Income, QDistinct> distinctByAmount() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'income_amount');
+      return query.addDistinctBy(r'amount');
     });
   }
 
-  QueryBuilder<Income, Income, QDistinct> distinctByIncome_note(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Income, Income, QDistinct> distinctByCategory() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'income_note', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'category');
     });
   }
 
-  QueryBuilder<Income, Income, QDistinct> distinctByIncome_source(
+  QueryBuilder<Income, Income, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'income_source',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Income, Income, QDistinct> distinctByIncome_title(
+  QueryBuilder<Income, Income, QDistinct> distinctByNote(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'income_title', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'note', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Income, Income, QDistinct> distinctBySource(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'source', caseSensitive: caseSensitive);
     });
   }
 }
@@ -963,1051 +1025,33 @@ extension IncomeQueryProperty on QueryBuilder<Income, Income, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Income, double, QQueryOperations> income_amountProperty() {
+  QueryBuilder<Income, double, QQueryOperations> amountProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'income_amount');
+      return query.addPropertyName(r'amount');
     });
   }
 
-  QueryBuilder<Income, String?, QQueryOperations> income_noteProperty() {
+  QueryBuilder<Income, int?, QQueryOperations> categoryProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'income_note');
+      return query.addPropertyName(r'category');
     });
   }
 
-  QueryBuilder<Income, String?, QQueryOperations> income_sourceProperty() {
+  QueryBuilder<Income, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'income_source');
+      return query.addPropertyName(r'name');
     });
   }
 
-  QueryBuilder<Income, String?, QQueryOperations> income_titleProperty() {
+  QueryBuilder<Income, String?, QQueryOperations> noteProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'income_title');
+      return query.addPropertyName(r'note');
     });
   }
-}
 
-// coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters
-
-extension GetExpenditureCollection on Isar {
-  IsarCollection<Expenditure> get expenditures => this.collection();
-}
-
-const ExpenditureSchema = CollectionSchema(
-  name: r'Expenditure',
-  id: 7148938471511735020,
-  properties: {
-    r'expenditure_amount': PropertySchema(
-      id: 0,
-      name: r'expenditure_amount',
-      type: IsarType.double,
-    ),
-    r'expenditure_note': PropertySchema(
-      id: 1,
-      name: r'expenditure_note',
-      type: IsarType.string,
-    ),
-    r'expenditure_source': PropertySchema(
-      id: 2,
-      name: r'expenditure_source',
-      type: IsarType.string,
-    ),
-    r'expenditure_title': PropertySchema(
-      id: 3,
-      name: r'expenditure_title',
-      type: IsarType.string,
-    )
-  },
-  estimateSize: _expenditureEstimateSize,
-  serialize: _expenditureSerialize,
-  deserialize: _expenditureDeserialize,
-  deserializeProp: _expenditureDeserializeProp,
-  idName: r'id',
-  indexes: {},
-  links: {
-    r'category': LinkSchema(
-      id: 6726020436773339375,
-      name: r'category',
-      target: r'Category',
-      single: true,
-    )
-  },
-  embeddedSchemas: {},
-  getId: _expenditureGetId,
-  getLinks: _expenditureGetLinks,
-  attach: _expenditureAttach,
-  version: '3.0.5',
-);
-
-int _expenditureEstimateSize(
-  Expenditure object,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  var bytesCount = offsets.last;
-  {
-    final value = object.expenditure_note;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.expenditure_source;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.expenditure_title;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  return bytesCount;
-}
-
-void _expenditureSerialize(
-  Expenditure object,
-  IsarWriter writer,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  writer.writeDouble(offsets[0], object.expenditure_amount);
-  writer.writeString(offsets[1], object.expenditure_note);
-  writer.writeString(offsets[2], object.expenditure_source);
-  writer.writeString(offsets[3], object.expenditure_title);
-}
-
-Expenditure _expenditureDeserialize(
-  Id id,
-  IsarReader reader,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
-  final object = Expenditure();
-  object.expenditure_amount = reader.readDouble(offsets[0]);
-  object.expenditure_note = reader.readStringOrNull(offsets[1]);
-  object.expenditure_source = reader.readStringOrNull(offsets[2]);
-  object.expenditure_title = reader.readStringOrNull(offsets[3]);
-  object.id = id;
-  return object;
-}
-
-P _expenditureDeserializeProp<P>(
-  IsarReader reader,
-  int propertyId,
-  int offset,
-  Map<Type, List<int>> allOffsets,
-) {
-  switch (propertyId) {
-    case 0:
-      return (reader.readDouble(offset)) as P;
-    case 1:
-      return (reader.readStringOrNull(offset)) as P;
-    case 2:
-      return (reader.readStringOrNull(offset)) as P;
-    case 3:
-      return (reader.readStringOrNull(offset)) as P;
-    default:
-      throw IsarError('Unknown property with id $propertyId');
-  }
-}
-
-Id _expenditureGetId(Expenditure object) {
-  return object.id;
-}
-
-List<IsarLinkBase<dynamic>> _expenditureGetLinks(Expenditure object) {
-  return [object.category];
-}
-
-void _expenditureAttach(
-    IsarCollection<dynamic> col, Id id, Expenditure object) {
-  object.id = id;
-  object.category.attach(col, col.isar.collection<Category>(), r'category', id);
-}
-
-extension ExpenditureQueryWhereSort
-    on QueryBuilder<Expenditure, Expenditure, QWhere> {
-  QueryBuilder<Expenditure, Expenditure, QAfterWhere> anyId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(const IdWhereClause.any());
-    });
-  }
-}
-
-extension ExpenditureQueryWhere
-    on QueryBuilder<Expenditure, Expenditure, QWhereClause> {
-  QueryBuilder<Expenditure, Expenditure, QAfterWhereClause> idEqualTo(Id id) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterWhereClause> idNotEqualTo(
-      Id id) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
-            )
-            .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
-            );
-      } else {
-        return query
-            .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
-            )
-            .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
-            );
-      }
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterWhereClause> idGreaterThan(Id id,
-      {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(
-        IdWhereClause.greaterThan(lower: id, includeLower: include),
-      );
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterWhereClause> idLessThan(Id id,
-      {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(
-        IdWhereClause.lessThan(upper: id, includeUpper: include),
-      );
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterWhereClause> idBetween(
-    Id lowerId,
-    Id upperId, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-}
-
-extension ExpenditureQueryFilter
-    on QueryBuilder<Expenditure, Expenditure, QFilterCondition> {
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_amountEqualTo(
-    double value, {
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'expenditure_amount',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_amountGreaterThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'expenditure_amount',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_amountLessThan(
-    double value, {
-    bool include = false,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'expenditure_amount',
-        value: value,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_amountBetween(
-    double lower,
-    double upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    double epsilon = Query.epsilon,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'expenditure_amount',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        epsilon: epsilon,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'expenditure_note',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'expenditure_note',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'expenditure_note',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'expenditure_note',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'expenditure_note',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'expenditure_note',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'expenditure_note',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'expenditure_note',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'expenditure_note',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'expenditure_note',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'expenditure_note',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_noteIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'expenditure_note',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'expenditure_source',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'expenditure_source',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'expenditure_source',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'expenditure_source',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'expenditure_source',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'expenditure_source',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'expenditure_source',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'expenditure_source',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'expenditure_source',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'expenditure_source',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'expenditure_source',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_sourceIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'expenditure_source',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'expenditure_title',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'expenditure_title',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'expenditure_title',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'expenditure_title',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'expenditure_title',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'expenditure_title',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'expenditure_title',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'expenditure_title',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'expenditure_title',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'expenditure_title',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'expenditure_title',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      expenditure_titleIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'expenditure_title',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition> idEqualTo(
-      Id value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition> idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition> idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition> idBetween(
-    Id lower,
-    Id upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-}
-
-extension ExpenditureQueryObject
-    on QueryBuilder<Expenditure, Expenditure, QFilterCondition> {}
-
-extension ExpenditureQueryLinks
-    on QueryBuilder<Expenditure, Expenditure, QFilterCondition> {
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition> category(
-      FilterQuery<Category> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'category');
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterFilterCondition>
-      categoryIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'category', 0, true, 0, true);
-    });
-  }
-}
-
-extension ExpenditureQuerySortBy
-    on QueryBuilder<Expenditure, Expenditure, QSortBy> {
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      sortByExpenditure_amount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_amount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      sortByExpenditure_amountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_amount', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      sortByExpenditure_note() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_note', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      sortByExpenditure_noteDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_note', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      sortByExpenditure_source() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_source', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      sortByExpenditure_sourceDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_source', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      sortByExpenditure_title() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_title', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      sortByExpenditure_titleDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_title', Sort.desc);
-    });
-  }
-}
-
-extension ExpenditureQuerySortThenBy
-    on QueryBuilder<Expenditure, Expenditure, QSortThenBy> {
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      thenByExpenditure_amount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_amount', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      thenByExpenditure_amountDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_amount', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      thenByExpenditure_note() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_note', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      thenByExpenditure_noteDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_note', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      thenByExpenditure_source() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_source', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      thenByExpenditure_sourceDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_source', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      thenByExpenditure_title() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_title', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy>
-      thenByExpenditure_titleDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'expenditure_title', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy> thenById() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QAfterSortBy> thenByIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'id', Sort.desc);
-    });
-  }
-}
-
-extension ExpenditureQueryWhereDistinct
-    on QueryBuilder<Expenditure, Expenditure, QDistinct> {
-  QueryBuilder<Expenditure, Expenditure, QDistinct>
-      distinctByExpenditure_amount() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'expenditure_amount');
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QDistinct> distinctByExpenditure_note(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'expenditure_note',
-          caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QDistinct>
-      distinctByExpenditure_source({bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'expenditure_source',
-          caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<Expenditure, Expenditure, QDistinct> distinctByExpenditure_title(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'expenditure_title',
-          caseSensitive: caseSensitive);
-    });
-  }
-}
-
-extension ExpenditureQueryProperty
-    on QueryBuilder<Expenditure, Expenditure, QQueryProperty> {
-  QueryBuilder<Expenditure, int, QQueryOperations> idProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'id');
-    });
-  }
-
-  QueryBuilder<Expenditure, double, QQueryOperations>
-      expenditure_amountProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'expenditure_amount');
-    });
-  }
-
-  QueryBuilder<Expenditure, String?, QQueryOperations>
-      expenditure_noteProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'expenditure_note');
-    });
-  }
-
-  QueryBuilder<Expenditure, String?, QQueryOperations>
-      expenditure_sourceProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'expenditure_source');
-    });
-  }
-
-  QueryBuilder<Expenditure, String?, QQueryOperations>
-      expenditure_titleProperty() {
+  QueryBuilder<Income, String?, QQueryOperations> sourceProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'expenditure_title');
+      return query.addPropertyName(r'source');
     });
   }
 }

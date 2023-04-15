@@ -7,6 +7,21 @@ part "wallet.g.dart";
 class Income {
   Id id = Isar.autoIncrement;
 
+  String? name;
+
+  String? note;
+
+  double amount = 0;
+
+  String? source;
+
+  int? category = 0;
+}
+
+/* @collection
+class Income {
+  Id id = Isar.autoIncrement;
+
   String? income_title;
 
   String? income_note;
@@ -18,11 +33,9 @@ class Income {
   final expenditure = IsarLink<Expenditure>();
 
   final category = IsarLink<Category>();
+} */
 
-
-}
-
-@collection
+/* @collection
 class Expenditure {
   Id id = Isar.autoIncrement;
 
@@ -35,7 +48,7 @@ class Expenditure {
   String? expenditure_source;
 
   final category = IsarLink<Category>();
-}
+} */
 
 @collection
 class Category {
