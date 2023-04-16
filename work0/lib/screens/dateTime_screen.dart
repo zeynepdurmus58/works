@@ -55,7 +55,7 @@ class _DateTimeScreenState extends State<DateTimeScreen> {
 
   showFormatDate() {
     if (selectedDate != null) {
-      var tarihim = DateFormat("dd.MM.yyyy").format(selectedDate!);
+      var tarihim = DateFormat("E d MMMM yyyy dd.MM.yyyy").format(selectedDate!);
 
       return Text(tarihim.toString());
     } else {

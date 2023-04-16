@@ -1,19 +1,19 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class DatePicker extends StatefulWidget {
-  const DatePicker({super.key});
+class DateListPicker extends StatefulWidget {
+  const DateListPicker({super.key});
 
   @override
-  State<DatePicker> createState() => _DatePickerState();
+  State<DateListPicker> createState() => _DateListPickerState();
 }
 
-class _DatePickerState extends State<DatePicker> {
+class _DateListPickerState extends State<DateListPicker> {
 
-    DateTime? selectedDate = DateTime.now();
+    List<DateTime> selectedDays = [];
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +25,15 @@ class _DatePickerState extends State<DatePicker> {
           //takvim
           SfDateRangePicker(
             view: DateRangePickerView.month,
-            selectionMode: DateRangePickerSelectionMode.single,
+            selectionMode: DateRangePickerSelectionMode.multiple,
             onSelectionChanged: (e) {
-              selectedDate = e.value;
+              List<DateTime> x = e.value;
+              selectedDays = x;
               setState(() {});
             },
           ),
           Text("Seçilen Tarih: "),
-          Text(DateFormat("E d MMMM yyyy").format(selectedDate!)),
+          Text(DateFormat("E d MMMM yyyy").format(selectedDays!)),
         ],
       ),
     );

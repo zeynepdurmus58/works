@@ -83,11 +83,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     category: "Date Picker"
                   ),
                 ),
-                //bos
+                //range picker
                 InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/calendar'),
+                  onTap: () => Navigator.of(context).pushNamed('/rangepicker'),
                   child: CategoryWidget(
-                    category: "bos"
+                    category: "range picker"
                   ),
                 ),
               ],
