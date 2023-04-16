@@ -32,12 +32,14 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                //user ekranı
                 InkWell(
                   onTap: () => Navigator.of(context).pushNamed('/test'),
                   child: CategoryWidget(
                     category: "users",
                   ),
                 ),
+                //category ekranı
                 InkWell(
                   onTap: () => Navigator.of(context).pushNamed('/categories'),
                   child: CategoryWidget(
@@ -52,14 +54,19 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                //gelir gider ekranı
                 InkWell(
                   onTap: () => Navigator.of(context).pushNamed('/incomes'),
                   child: CategoryWidget(
                     category: "Gelir - Gider"
                   ),
                 ),
-                CategoryWidget(
-                  category: "category4"
+                //calendar ekranı
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/calendar'),
+                  child: CategoryWidget(
+                    category: "category4"
+                  ),
                 ),
               ],
             ),

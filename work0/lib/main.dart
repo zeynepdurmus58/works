@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_element
 
 import 'package:flutter/material.dart';
+import 'package:work0/screens/calendar_screen.dart';
 import 'package:work0/screens/categories_screen.dart';
 import 'package:work0/screens/home_screen.dart';
 import 'package:work0/screens/income_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/test' :(context) => TestScreen(),
         '/categories' :(context) => CategoriesScreen(),
         '/incomes' :(context) => IncomesScreen(),
+        '/calendar' :(context) => CalendarScreen(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
