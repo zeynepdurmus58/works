@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-
 import '../widgets/category_widget.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,14 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 //user ekranı
                 InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/test'),
+                  onTap: () => GoRouter.of(context).push('/test'),
                   child: CategoryWidget(
                     category: "users",
                   ),
                 ),
                 //category ekranı
                 InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/categories'),
+                  onTap: () => GoRouter.of(context).push('/categories'),
                   child: CategoryWidget(
                     category: "Kategoriler"
                   ),
@@ -58,16 +58,16 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 //gelir gider ekranı
                 InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/incomes'),
+                  onTap: () => GoRouter.of(context).push('/incomes'),
                   child: CategoryWidget(
                     category: "Gelir - Gider"
                   ),
                 ),
-                //calendar ekranı
+                //date time ekranı
                 InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/calendar'),
+                  onTap: () => GoRouter.of(context).push('/datetime'),
                   child: CategoryWidget(
-                    category: "Calendar"
+                    category: "Date Time"
                   ),
                 ),
               ],
@@ -81,14 +81,14 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 //date picker
                 InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/datepicker'),
+                  onTap: () => GoRouter.of(context).push('/datepicker'),
                   child: CategoryWidget(
                     category: "Date Picker"
                   ),
                 ),
                 //range picker
                 InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/rangepicker'),
+                  onTap: () => GoRouter.of(context).push('/rangepicker'),
                   child: CategoryWidget(
                     category: "range picker"
                   ),
@@ -104,14 +104,14 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 //date list picker
                 InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/datelistpicker'),
+                  onTap: () => GoRouter.of(context).push('/datelistpicker'),
                   child: CategoryWidget(
                     category: "Date List Picker"
                   ),
                 ),
                 //bos
                 InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/rangepicker'),
+                  onTap: () => GoRouter.of(context).push('/rangepicker'),
                   child: CategoryWidget(
                     category: "bos"
                   ),
