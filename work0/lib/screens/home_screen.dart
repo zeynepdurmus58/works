@@ -65,7 +65,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 InkWell(
                   onTap: () => Navigator.of(context).pushNamed('/calendar'),
                   child: CategoryWidget(
-                    category: "category4"
+                    category: "Calendar"
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                //date picker
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/datepicker'),
+                  child: CategoryWidget(
+                    category: "Date Picker"
+                  ),
+                ),
+                //bos
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/calendar'),
+                  child: CategoryWidget(
+                    category: "bos"
                   ),
                 ),
               ],

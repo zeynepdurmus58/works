@@ -8,6 +8,8 @@ import 'package:work0/screens/income_screen.dart';
 import 'package:work0/screens/test_screen.dart';
 import 'package:go_router/go_router.dart';
 
+import 'screens/date_picker.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
         '/categories' :(context) => CategoriesScreen(),
         '/incomes' :(context) => IncomesScreen(),
         '/calendar' :(context) => CalendarScreen(),
+        '/datepicker' :(context) => DatePicker(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
