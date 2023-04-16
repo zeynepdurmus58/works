@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:isar/isar.dart";
 
-import '../db/wallet.dart';
-import '../widgets/my_text_field.dart';
+import "../db/wallet.dart";
+import "../widgets/my_text_field.dart";
 
 
 class IncomesScreen extends StatefulWidget {
@@ -61,7 +61,7 @@ class _IncomesScreenState extends State<IncomesScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.red,
-          content: Text('Ürün silinemedi.'),
+          content: Text("Ürün silinemedi."),
         ));
       }
     });
@@ -71,15 +71,15 @@ class _IncomesScreenState extends State<IncomesScreen> {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
-        title: const Text('Onay'),
-        content: const Text('ürünü silmek istediğinizden emin misiniz?'),
+        title: const Text("Onay"),
+        content: const Text("ürünü silmek istediğinizden emin misiniz?"),
         actions: <CupertinoDialogAction>[
           CupertinoDialogAction(
             isDefaultAction: true,
             onPressed: () {
               Navigator.pop(context);
             },
-            child: const Text('Hayır'),
+            child: const Text("Hayır"),
           ),
           CupertinoDialogAction(
             isDestructiveAction: true,
@@ -87,7 +87,7 @@ class _IncomesScreenState extends State<IncomesScreen> {
               Navigator.pop(context);
               removeIncome(incomesId);
             },
-            child: const Text('Evet'),
+            child: const Text("Evet"),
           ),
         ],
       ),
@@ -96,7 +96,7 @@ class _IncomesScreenState extends State<IncomesScreen> {
 
   List<Widget> incomesWidgets() {
     if (incomes.isEmpty) {
-      return [Center(child: Text('Ürün Bulunamadi.'))];
+      return [Center(child: Text("Ürün Bulunamadi."))];
     } else {
       return incomes
           .map((e) => Padding(
@@ -178,7 +178,7 @@ class _IncomesScreenState extends State<IncomesScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Gelir - Gider Adı'),
+          title: Text("Gelir - Gider Adı"),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
@@ -196,11 +196,11 @@ class _IncomesScreenState extends State<IncomesScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 8),
-              Text('    Gelir Gider Adı:'),
+              Text("    Gelir Gider Adı:"),
               SizedBox(height: 8),
               MyTextField(
-                label: 'Gelir - Gider Adı',
-                hint: 'Gelir - Gider Adı',
+                label: "Gelir - Gider Adı",
+                hint: "Gelir - Gider Adı",
                 controller: nameController,
                 //icon: Icon(Icons.text_fields),
                 onChanged: (value) {
@@ -210,11 +210,11 @@ class _IncomesScreenState extends State<IncomesScreen> {
                 },
               ),
               SizedBox(height: 8),
-              Text('    Miktar:'),
+              Text("    Miktar:"),
               SizedBox(height: 8),
               MyTextField(
                 label: "Miktar",
-                hint: 'Miktar',
+                hint: "Miktar",
                 //icon: Icon(Icons.money),
                 controller: amountController,
                 onChanged: (value) {
@@ -225,12 +225,12 @@ class _IncomesScreenState extends State<IncomesScreen> {
                     }
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Miktar sayı olması gerekli.')));
+                        SnackBar(content: Text("Miktar sayı olması gerekli.")));
                   }
                 },
               ),
               SizedBox(height: 8),
-              Text('    Kategori:'),
+              Text("    Kategori:"),
               SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -251,11 +251,11 @@ class _IncomesScreenState extends State<IncomesScreen> {
                 ),
               ),
               SizedBox(height: 8),
-              Text('    Siralama: '),
+              Text("    Siralama: "),
               SizedBox(height: 8),
               MyTextField(
                 label: "Gelir Gider Sıralama",
-                hint: 'Gelir Gider Sıralama',
+                hint: "Gelir Gider Sıralama",
                 controller: orderController,
                 //icon: Icon(Icons.sort),
                 number: true,
@@ -269,7 +269,7 @@ class _IncomesScreenState extends State<IncomesScreen> {
                     setState(() {});
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Sıralama sayı olması gerekli.')));
+                        content: Text("Sıralama sayı olması gerekli.")));
                   }
                 },
               ),
@@ -286,7 +286,7 @@ class _IncomesScreenState extends State<IncomesScreen> {
                             child: Row(
                               children: [
                                 Icon(Icons.add),
-                                Text('Ekle'),
+                                Text("Ekle"),
                               ],
                             ),
                           ))),
