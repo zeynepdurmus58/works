@@ -1,6 +1,9 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:work0/screens/categories_screen.dart';
 import 'package:work0/screens/home_screen.dart';
+import 'package:work0/screens/income_screen.dart';
 import 'package:work0/screens/test_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,7 +27,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home' :(context) => HomeScreen(),
         '/test' :(context) => TestScreen(),
-        '/categories' :(context) => CategoriesScreen()
+        '/categories' :(context) => CategoriesScreen(),
+        '/incomes' :(context) => IncomesScreen(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

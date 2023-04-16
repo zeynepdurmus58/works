@@ -15,7 +15,10 @@ class Income {
 
   String? source;
 
-  int? category = 0;
+  int? category;
+
+  int order = 0;
+
 }
 
 /* @collection

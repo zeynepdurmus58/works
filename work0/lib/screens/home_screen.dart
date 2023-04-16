@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 
 import '../widgets/category_widget.dart';
@@ -50,8 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CategoryWidget(
-                  category: "category3"
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/incomes'),
+                  child: CategoryWidget(
+                    category: "Gelir - Gider"
+                  ),
                 ),
                 CategoryWidget(
                   category: "category4"

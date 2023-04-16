@@ -37,8 +37,13 @@ const IncomeSchema = CollectionSchema(
       name: r'note',
       type: IsarType.string,
     ),
-    r'source': PropertySchema(
+    r'order': PropertySchema(
       id: 4,
+      name: r'order',
+      type: IsarType.long,
+    ),
+    r'source': PropertySchema(
+      id: 5,
       name: r'source',
       type: IsarType.string,
     )
@@ -94,7 +99,8 @@ void _incomeSerialize(
   writer.writeLong(offsets[1], object.category);
   writer.writeString(offsets[2], object.name);
   writer.writeString(offsets[3], object.note);
-  writer.writeString(offsets[4], object.source);
+  writer.writeLong(offsets[4], object.order);
+  writer.writeString(offsets[5], object.source);
 }
 
 Income _incomeDeserialize(
@@ -109,7 +115,8 @@ Income _incomeDeserialize(
   object.id = id;
   object.name = reader.readStringOrNull(offsets[2]);
   object.note = reader.readStringOrNull(offsets[3]);
-  object.source = reader.readStringOrNull(offsets[4]);
+  object.order = reader.readLong(offsets[4]);
+  object.source = reader.readStringOrNull(offsets[5]);
   return object;
 }
 
@@ -129,6 +136,8 @@ P _incomeDeserializeProp<P>(
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
+      return (reader.readLong(offset)) as P;
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -696,6 +705,58 @@ extension IncomeQueryFilter on QueryBuilder<Income, Income, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Income, Income, QAfterFilterCondition> orderEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'order',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> orderGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'order',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> orderLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'order',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterFilterCondition> orderBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'order',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Income, Income, QAfterFilterCondition> sourceIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -896,6 +957,18 @@ extension IncomeQuerySortBy on QueryBuilder<Income, Income, QSortBy> {
     });
   }
 
+  QueryBuilder<Income, Income, QAfterSortBy> sortByOrder() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'order', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterSortBy> sortByOrderDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'order', Sort.desc);
+    });
+  }
+
   QueryBuilder<Income, Income, QAfterSortBy> sortBySource() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'source', Sort.asc);
@@ -970,6 +1043,18 @@ extension IncomeQuerySortThenBy on QueryBuilder<Income, Income, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Income, Income, QAfterSortBy> thenByOrder() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'order', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Income, Income, QAfterSortBy> thenByOrderDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'order', Sort.desc);
+    });
+  }
+
   QueryBuilder<Income, Income, QAfterSortBy> thenBySource() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'source', Sort.asc);
@@ -1010,6 +1095,12 @@ extension IncomeQueryWhereDistinct on QueryBuilder<Income, Income, QDistinct> {
     });
   }
 
+  QueryBuilder<Income, Income, QDistinct> distinctByOrder() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'order');
+    });
+  }
+
   QueryBuilder<Income, Income, QDistinct> distinctBySource(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1046,6 +1137,12 @@ extension IncomeQueryProperty on QueryBuilder<Income, Income, QQueryProperty> {
   QueryBuilder<Income, String?, QQueryOperations> noteProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'note');
+    });
+  }
+
+  QueryBuilder<Income, int, QQueryOperations> orderProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'order');
     });
   }
 
