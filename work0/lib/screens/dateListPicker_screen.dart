@@ -12,8 +12,7 @@ class DateListPicker extends StatefulWidget {
 }
 
 class _DateListPickerState extends State<DateListPicker> {
-
-    List<DateTime> selectedDays = [];
+  List<DateTime> selectedDays = [];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,11 @@ class _DateListPickerState extends State<DateListPicker> {
             },
           ),
           Text("Seçilen Tarih: "),
-          Text(DateFormat("E d MMMM yyyy").format(selectedDays!)),
+          ...selectedDays
+              .map(
+                (e) => Text(DateFormat("E d MMMM yyyy").format(e)),
+              )
+              .toList()
         ],
       ),
     );

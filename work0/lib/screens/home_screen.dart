@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
+          //user - kategoriler
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(
@@ -49,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+          //gelir,gider - dateTime
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(
@@ -71,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+          //Date Picker - Range Picker
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(
@@ -88,6 +91,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () => Navigator.of(context).pushNamed('/rangepicker'),
                   child: CategoryWidget(
                     category: "range picker"
+                  ),
+                ),
+              ],
+            ),
+          ),
+          //Date List Picker - Boş
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                //date list picker
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/datelistpicker'),
+                  child: CategoryWidget(
+                    category: "Date List Picker"
+                  ),
+                ),
+                //bos
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/rangepicker'),
+                  child: CategoryWidget(
+                    category: "bos"
                   ),
                 ),
               ],

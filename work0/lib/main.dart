@@ -3,13 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:work0/screens/dateTime_screen.dart';
 import 'package:work0/screens/categories_screen.dart';
+import 'package:work0/screens/dateListPicker_screen.dart';
 import 'package:work0/screens/home_screen.dart';
 import 'package:work0/screens/income_screen.dart';
 import 'package:work0/screens/test_screen.dart';
 import 'package:go_router/go_router.dart';
 
-import 'screens/date_picker.dart';
-import 'screens/range_picker_screen.dart';
+import 'screens/datePicker_screen.dart';
+import 'screens/rangePicker_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         '/calendar' :(context) => DateTimeScreen(),
         '/datepicker' :(context) => DatePicker(),
         '/rangepicker' :(context) => RangePicker(),
+        '/datelistpicker' :(context) => DateListPicker(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
