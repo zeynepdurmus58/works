@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:work0/screens/categories_screen.dart';
@@ -11,7 +11,15 @@ void main() {
   runApp(const MyApp());
 }
 
-
+// GoRouter configuration
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => HomeScreen(),
+    ),
+  ],
+);
 
 
 

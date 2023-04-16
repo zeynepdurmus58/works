@@ -75,8 +75,6 @@ class _IncomesScreenState extends State<IncomesScreen> {
         content: const Text('ürünü silmek istediğinizden emin misiniz?'),
         actions: <CupertinoDialogAction>[
           CupertinoDialogAction(
-            /// This parameter indicates this action is the default,
-            /// and turns the action's text to bold text.
             isDefaultAction: true,
             onPressed: () {
               Navigator.pop(context);
@@ -84,9 +82,6 @@ class _IncomesScreenState extends State<IncomesScreen> {
             child: const Text('Hayır'),
           ),
           CupertinoDialogAction(
-            /// This parameter indicates the action would perform
-            /// a destructive action such as deletion, and turns
-            /// the action's text color to red.
             isDestructiveAction: true,
             onPressed: () {
               Navigator.pop(context);
