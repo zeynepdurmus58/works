@@ -35,17 +35,17 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 //user ekranı
                 InkWell(
-                  onTap: () => GoRouter.of(context).push('/test'),
+                  onTap: () => Navigator.of(context).pushNamed('/test'),
                   child: CategoryWidget(
                     category: "users",
                   ),
                 ),
                 //category ekranı
                 InkWell(
-                  onTap: () => GoRouter.of(context).push('/categories'),
-                  child: CategoryWidget(
-                    category: "Kategoriler"
-                  ),
+                  //onTap: () => context.pushNamed('/categories'),
+                  //onTap: () => context.go('/categories'),
+                  onTap: () => Navigator.of(context).pushNamed('/categories'),
+                  child: CategoryWidget(category: "Kategoriler"),
                 ),
               ],
             ),
@@ -58,17 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 //gelir gider ekranı
                 InkWell(
-                  onTap: () => GoRouter.of(context).push('/incomes'),
-                  child: CategoryWidget(
-                    category: "Gelir - Gider"
-                  ),
+                  onTap: () => Navigator.of(context).pushNamed('/incomes'),
+                  child: CategoryWidget(category: "Gelir - Gider"),
                 ),
                 //date time ekranı
                 InkWell(
-                  onTap: () => GoRouter.of(context).push('/datetime'),
-                  child: CategoryWidget(
-                    category: "Date Time"
-                  ),
+                  onTap: () => Navigator.of(context).pushNamed('/datetime'),
+                  child: CategoryWidget(category: "Date Time"),
                 ),
               ],
             ),
@@ -81,17 +77,13 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 //date picker
                 InkWell(
-                  onTap: () => GoRouter.of(context).push('/datepicker'),
-                  child: CategoryWidget(
-                    category: "Date Picker"
-                  ),
+                  onTap: () => Navigator.of(context).pushNamed('/datepicker'),
+                  child: CategoryWidget(category: "Date Picker"),
                 ),
                 //range picker
                 InkWell(
-                  onTap: () => GoRouter.of(context).push('/rangepicker'),
-                  child: CategoryWidget(
-                    category: "range picker"
-                  ),
+                  onTap: () => Navigator.of(context).pushNamed('/rangepicker'),
+                  child: CategoryWidget(category: "range picker"),
                 ),
               ],
             ),
@@ -104,17 +96,13 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 //date list picker
                 InkWell(
-                  onTap: () => GoRouter.of(context).push('/datelistpicker'),
-                  child: CategoryWidget(
-                    category: "Date List Picker"
-                  ),
+                  onTap: () => Navigator.of(context).pushNamed('/datelistpicker'),
+                  child: CategoryWidget(category: "Date List Picker"),
                 ),
                 //bos
                 InkWell(
-                  onTap: () => GoRouter.of(context).push('/rangepicker'),
-                  child: CategoryWidget(
-                    category: "bos"
-                  ),
+                  onTap: () => Navigator.of(context).pushNamed('/rangepicker'),
+                  child: CategoryWidget(category: "bos"),
                 ),
               ],
             ),

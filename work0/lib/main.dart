@@ -17,7 +17,7 @@ void main() {
 }
 
 // GoRouter configuration
-final _router = GoRouter(
+/* final _router = GoRouter(
   initialLocation: '/home',
   routes: [
     GoRoute(
@@ -53,7 +53,7 @@ final _router = GoRouter(
       builder: (context, state) => DateListPicker(),
     ),
   ],
-);
+); */
 
 
 
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      /* routes: {
+      routes: {
         '/home' :(context) => HomeScreen(),
         '/test' :(context) => TestScreen(),
         '/categories' :(context) => CategoriesScreen(),
@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
         '/datepicker' :(context) => DatePicker(),
         '/rangepicker' :(context) => RangePicker(),
         '/datelistpicker' :(context) => DateListPicker(),
-      }, */
+      },
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
