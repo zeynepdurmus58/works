@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          //Date List Picker - Boş
+          //Date List Picker - Chart
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(
@@ -99,10 +99,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () => Navigator.of(context).pushNamed('/datelistpicker'),
                   child: CategoryWidget(category: "Date List Picker"),
                 ),
-                //bos
+                //chart
                 InkWell(
-                  onTap: () => Navigator.of(context).pushNamed('/rangepicker'),
-                  child: CategoryWidget(category: "bos"),
+                  onTap: () => Navigator.of(context).pushNamed('/chart'),
+                  child: CategoryWidget(category: "Chart"),
                 ),
               ],
             ),

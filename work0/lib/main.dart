@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_element
 
 import 'package:flutter/material.dart';
+import 'package:work0/screens/chart_screen.dart';
 import 'package:work0/screens/dateTime_screen.dart';
 import 'package:work0/screens/categories_screen.dart';
 import 'package:work0/screens/dateListPicker_screen.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
         '/datepicker' :(context) => DatePicker(),
         '/rangepicker' :(context) => RangePicker(),
         '/datelistpicker' :(context) => DateListPicker(),
+        '/chart' :(context) => ChartScreen(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
