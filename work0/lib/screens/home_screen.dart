@@ -107,6 +107,25 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+          //info - boş
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                //info
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/info'),
+                  child: CategoryWidget(category: "Info"),
+                ),
+                //chart
+                InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/info'),
+                  child: CategoryWidget(category: "boş"),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
